@@ -1,0 +1,37 @@
+% What this script does:
+% Takes a particle's current position (xp,zp),
+% and finds the value of the u(x,z) and w(x,z) at that exact point.
+% Since the particles position has only previously been defined on a grid, 
+% the function uses interpolation to estimate the velocity from the
+% surrounding grid values.
+
+% It takes inputs:
+% (xp,zp)- the particle's current position
+% (x,z) vectors of grid values 
+% u- horizontal velocity 
+% w- vertical velocity 
+
+% It should return:
+% up- interpolated horizontal velocity at (xp,zp)
+% wp- interpolated vertical velocity at (xp,zp)
+
+function[up,wp]=interp_velocity(xp,zp,x,z,u,w)
+    % making everything the form needed to use interp2
+    [Xgrid,Zgrid]= meshgrid(x,z);
+    uT=u.';
+    wT=w.';
+    
+    % Use interp2 to estimate the velocity between nodes to mkae particles
+    % move continuously
+    up= interp2(Xgrid,Zgrid,uT,xp,zp,'linear');
+    wp= interp2(Xgrid,Zgrid,wT,xp,zp,'linear');
+
+    % If values returned are NaN, replace with 0    
+    if isnan(up)
+        up=0;
+    end
+    
+    if isnan(wp)
+        wp=0;
+    end
+end
