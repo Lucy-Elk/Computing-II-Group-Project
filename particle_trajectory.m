@@ -16,7 +16,7 @@
 % zp- the z position of the particle at each time step
 % t- time vector
 
-function[xp,zp,t]= particle_trajectory(x0,z0,x,z,u,w,U0,dt,tmax,Lx,Lz)
+function[xp,zp,t]= particle_trajectory(x0,z0,x,z,u,w,U0,dt,tmax)
     % Number of time steps
     nt= round(tmax/dt)+1;
     
@@ -27,26 +27,34 @@ function[xp,zp,t]= particle_trajectory(x0,z0,x,z,u,w,U0,dt,tmax,Lx,Lz)
     
     xp(1) = x0;
     zp(1) = z0;
+
+    % Boundaries
+    x_min = x(1);
+    x_max = x(end);
+    z_min = z(1);
+    z_max = z(end);
+    Lx    = x_max - x_min;
+
     
     for n = 1:nt-1
         % Use interp_velocity to interpolate the velocity at the current position
         [up,wp] = interp_velocity(xp(n),zp(n),x,z,u,w);
     
         % Update particle position using differentiated versions of the eqns in Q6
-        xp_new = xp(n) + (up + U0) * dt;
+        xp_new = xp(n) + (U0+up) * dt;
         zp_new = zp(n) + wp * dt;
     
         % Set values at upper/lower bounds
-        if xp_new<0
+        if xp_new<x_min
             xp_new=xp_new+Lx;
-        elseif xp_new>=Lx
+        elseif xp_new>x_max
             xp_new=xp_new-Lx;
         end
         
-        if zp_new<0
+        if zp_new<z_min
             zp_new=0;
-        elseif zp_new>=Lz
-            zp_new=Lz;
+        elseif zp_new>z_max
+            zp_new=z_max;
         end
    
         xp(n+1) = xp_new;
