@@ -16,14 +16,13 @@
 % wp- interpolated vertical velocity at (xp,zp)
 
 function[up,wp]=interp_velocity(xp,zp,x,z,u,w)
-    xp = min(max(xp, x(1)), x(end));
-    zp = min(max(zp, z(1)), z(end));
+    dx= x(2)-x(1);
+    Lx = x(end) - x(1) +dx;
+    xp=x(1)+mod(xp-x(1),Lx);
 
-    % making everything the form needed to use interp2
-    [Xgrid,Zgrid]= meshgrid(x,z);
-    
+    zp=min(max(zp,z(1)),z(end));
     % Use interp2 to estimate the velocity between nodes to mkae particles
     % move continuously
-    up= interp2(Xgrid,Zgrid,u,xp,zp,'linear',0);
-    wp= interp2(Xgrid,Zgrid,w,xp,zp,'linear',0);
+    up= interp2(x,z,u,xp,zp,'linear',0);
+    wp= interp2(x,z,w,xp,zp,'linear',0);
 end
