@@ -10,7 +10,7 @@
 % Outputs:
 % Plots of trajectories
 
-clear; clc; close all;
+clear; clc;
 
 
 % load results from tasks 4 and 5
@@ -24,12 +24,12 @@ Lz= z(end)-z(1);
 x_min=x(1);
 z_min=z(1);
 
-x_turb= x_turbine; % turbine x position
-z_hub= z_turbine; % turbine hub height
+x_turb= x_0; % turbine x position
+z_hub= z_0; % turbine hub height
 
 % 'Seed' the starting points
 x_seeds = linspace(x_min + 0.1*Lx, x_min + 0.4*Lx, 5);
-z_seeds = linspace(z_min + 0.1*Lz, z_min + 0.9*Lz, 3);
+z_seeds = [50,100,150,200,250,300,350,400,450,500];
 
 [x_seeds_grid,z_seeds_grid]= meshgrid(x_seeds,z_seeds);
 X_seeds= x_seeds_grid(:);
@@ -66,11 +66,37 @@ plot([x(1) x(end) x(end) x(1) x(1)], ...
 
 % Mark where turbine is
 plot(x_turb,z_hub,'rx','Markersize',10,'Linewidth',2);
+text(x_turb, z_hub, '  Turbine', ...
+     'Color', 'r', 'FontSize', 12, 'FontWeight', 'bold', ...
+     'HorizontalAlignment','left', 'VerticalAlignment','middle');
 
 % Plot particle trajectories
+
+colors = lines(length(z_seeds));
+
+% for p = 1:numP
+% 
+%     plot(xp_all(p,:), zp_all(p,:), 'LineWidth', 1.2);
+% end
+
 for p = 1:numP
-    plot(xp_all(p,:), zp_all(p,:), 'LineWidth', 1.2);
+    % Copy particle trajectory
+    xp_plot = xp_all(p,:);
+    zp_plot = zp_all(p,:);
+    
+    % unwrap for visual ease
+    for n = 2:nt
+        if xp_plot(n) < xp_plot(n-1) - 0.5*Lx
+            xp_plot(n:end) = xp_plot(n:end) + Lx;
+        elseif xp_plot(n) > xp_plot(n-1) + 0.5*Lx
+            xp_plot(n:end) = xp_plot(n:end) - Lx;
+        end
+    end
+    % get which z level the particle came from
+    z_level = find(abs(Z_seeds(p) - z_seeds) < 1e-6);
+    plot(xp_plot, zp_plot, 'LineWidth', 1, 'Color',colors(z_level,:));
 end
+
 
 xlabel('X Position (m)');
 ylabel('Z Position (m)');
