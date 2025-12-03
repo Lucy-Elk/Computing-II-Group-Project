@@ -43,16 +43,13 @@ function[xp,zp,t]= particle_trajectory(x0,z0,x,z,u,w,U0,dt,tmax)
         % Update particle position using differentiated versions of the eqns in Q6
         xp_new = xp(n) + (U0+up) * dt;
         zp_new = zp(n) + wp * dt;
+
+        xp_new = x_min +mod(xp_new-x_min,Lx);
     
         % Set values at upper/lower bounds
-        if xp_new<x_min
-            xp_new=xp_new+Lx;
-        elseif xp_new>x_max
-            xp_new=xp_new-Lx;
-        end
         
         if zp_new<z_min
-            zp_new=0;
+            zp_new=z_min;
         elseif zp_new>z_max
             zp_new=z_max;
         end
