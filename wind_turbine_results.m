@@ -99,7 +99,6 @@ for k = 1:Nx
 end
 
 u = real(ifft(u_hat * Nx, [], 2));
-u=u-u(:,1);
 
 % Plots
 figure('Position', [100, 100, 1200, 800]);
@@ -171,4 +170,5 @@ sgtitle('Wind Turbine Flow Simulation Results');
 %% save
 save('wind_turbine_results.mat', 'x', 'z', 'w', 'u', 'fx', 'X', 'Z','U0','Lx','Lz','x_0','z_0');
 fprintf('Done!\n');
+
 
