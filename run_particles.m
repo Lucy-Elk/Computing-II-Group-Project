@@ -60,16 +60,6 @@ end
 figure;
 hold on;
 
-% Plot domain
-plot([x(1) x(end) x(end) x(1) x(1)], ...
-     [z(1) z(1)   z(end) z(end) z(1)], 'k-');
-
-% Mark where turbine is
-plot(x_turb,z_hub,'rx','Markersize',10,'Linewidth',2);
-text(x_turb, z_hub, '  Turbine', ...
-     'Color', 'r', 'FontSize', 12, 'FontWeight', 'bold', ...
-     'HorizontalAlignment','left', 'VerticalAlignment','middle');
-
 % Plot particle trajectories
 
 colors = lines(length(z_seeds));
@@ -97,12 +87,20 @@ for p = 1:numP
     plot(xp_plot, zp_plot, 'LineWidth', 1, 'Color',colors(z_level,:));
 end
 
+% Mark where turbine is
+plot(x_turb,z_hub,'rx','Markersize',10,'Linewidth',2);
+text(x_turb, z_hub, '  Turbine', ...
+     'Color', 'r', 'FontSize', 20, 'FontWeight', 'bold', ...
+     'HorizontalAlignment','left', 'VerticalAlignment','middle');
 
-xlabel('X Position (m)');
-ylabel('Z Position (m)');
-title('Particle Trajectories');
+
+xlabel('X Position (m)', 'Interpreter', 'latex', 'FontSize', 24);
+ylabel('Z Position (m)', 'Interpreter', 'latex', 'FontSize', 24);
+title('Particle Trajectories', 'Interpreter', 'latex', 'FontSize', 26);
 xlim([x(1),x(end)]);
-ylim([z(1),z(end)]);
+ylim([z(1),525]);
+set(gca, 'FontSize', 24, 'TickLabelInterpreter', 'latex');
 grid on;
 hold off;
+
 
