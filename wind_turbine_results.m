@@ -1,3 +1,4 @@
+%% 
 % Wind Turbine Flow Solver - Tasks 4 & 5
 % Spectral method in x, finite differences in z
 
@@ -23,7 +24,7 @@ sigma_x = 50;
 sigma_z = 40; 
 
 % Choose a large A to amplify the effect
-A = 10;  
+A = 5;  
 
 [X, Z] = meshgrid(x, z);
 fx = A * exp(-((X - x_0).^2 / (2 * sigma_x^2) + ...
@@ -98,6 +99,7 @@ for k = 1:Nx
 end
 
 u = real(ifft(u_hat * Nx, [], 2));
+u=u-u(:,1);
 
 % Plots
 figure('Position', [100, 100, 1200, 800]);
