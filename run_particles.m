@@ -14,7 +14,7 @@ clear; clc;
 
 
 % load results from tasks 4 and 5
-load('wind_turbine_results.mat');
+load('wind_turbine_results.m');
 
 %Set up:
 Lx=x(end)-x(1);
@@ -102,5 +102,6 @@ ylim([z(1),525]);
 set(gca, 'FontSize', 24, 'TickLabelInterpreter', 'latex');
 grid on;
 hold off;
+
 
 
