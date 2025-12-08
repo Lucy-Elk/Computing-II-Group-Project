@@ -5,10 +5,10 @@
 clear; clc;
 
 % Setup parameters
-Lx = 1000;          
+Lx = 100000;          
 Lz = 800;
-Nx = 256;          
-Nz = 128;           
+Nx = 2500;          
+Nz = 1250;           
 U0 = 20;          
 
 dx = Lx / Nx;
@@ -94,12 +94,11 @@ for k = 1:Nx
     if abs(k_vec(k)) > 1e-10  
         u_hat(:, k) = 1i * dwdz_hat(:, k) / k_vec(k);
     else
-        u_hat(:, k) = 0;  
     end
 end
 
-u = real(ifft(u_hat * Nx, [], 2));
-
+u = real(ifft(u_hat * Nx, [], 2)); 
+u=u-u(1,:);
 % Plots
 figure('Position', [100, 100, 1200, 800]);
 
@@ -109,6 +108,7 @@ shading interp;
 colorbar;
 xlabel('x (m)');
 ylabel('z (m)');
+xlim([24000,26000]);
 title('Vertical velocity w(x,z)');
 colormap(jet);
 
@@ -117,6 +117,7 @@ pcolor(X, Z, u);
 shading interp;
 colorbar;
 xlabel('x (m)');
+xlim([24000,26000]);
 ylabel('z (m)');
 title('Horizontal velocity u(x,z)');
 colormap(jet);
@@ -126,6 +127,7 @@ contourf(X, Z, w, 20);
 colorbar;
 xlabel('x (m)');
 ylabel('z (m)');
+xlim([24000,26000]);
 title('Contours of w(x,z)');
 
 % plot w at a few different heights
@@ -140,6 +142,7 @@ hold off;
 xlabel('x (m)');
 ylabel('w (m/s)');
 title('w at different heights');
+xlim([24000,26000]);
 legend('Location', 'best');
 grid on;
 
@@ -152,6 +155,7 @@ end
 hold off;
 xlabel('x (m)');
 ylabel('u (m/s)');
+xlim([24000,26000]);
 title('u at different heights');
 legend('Location', 'best');
 grid on;
@@ -162,6 +166,7 @@ shading interp;
 colorbar;
 xlabel('x (m)');
 ylabel('z (m)');
+xlim([24000,26000]);
 title('Forcing function f_x(x,z)');
 colormap(jet);
 
@@ -170,5 +175,4 @@ sgtitle('Wind Turbine Flow Simulation Results');
 %% save
 save('wind_turbine_results.mat', 'x', 'z', 'w', 'u', 'fx', 'X', 'Z','U0','Lx','Lz','x_0','z_0');
 fprintf('Done!\n');
-
 
